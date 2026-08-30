@@ -1,0 +1,14 @@
+# Despliegue "casi un clic" en Render.com
+# En Render: New + → Blueprint → conecta el repo con estos archivos → Apply.
+# Luego pon el valor de FBV_TOKEN en el panel (Environment).
+services:
+  - type: web
+    name: descargador-video
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: FBV_TOKEN
+        sync: false   # lo pones tú en el panel (un token largo y secreto)
+      - key: FBV_MAX_MB
+        value: "200"

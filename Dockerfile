@@ -4,7 +4,7 @@ FROM python:3.12-slim
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir yt-dlp flask gunicorn
+RUN pip install --no-cache-dir yt-dlp gallery-dl flask gunicorn requests
 
 WORKDIR /app
 COPY app.py /app/app.py
@@ -13,5 +13,5 @@ COPY app.py /app/app.py
 ENV PORT=8080
 EXPOSE 8080
 
-# timeout amplio porque descargar un vídeo puede tardar
+# timeout amplio porque descargar puede tardar
 CMD ["sh", "-c", "gunicorn -b 0.0.0.0:${PORT:-8080} -t 330 -w 2 app:app"]

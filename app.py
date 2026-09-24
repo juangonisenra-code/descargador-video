@@ -32,7 +32,8 @@ MAX_FOTOS = int(os.environ.get("FBV_MAX_FOTOS", "20"))  # tope de fotos por gale
 WP_BASE   = os.environ.get("WP_BASE", "https://www.elperiodicodeceuta.es").rstrip("/")
 EPC_TOKEN = os.environ.get("EPC_TOKEN", "")          # el token del endpoint epc/v1 en WP
 
-FB_RE = re.compile(r"^https?://([a-z0-9\-]+\.)?facebook\.com/", re.I)
+# /fbvideo acepta ademas X (Twitter): yt-dlp lo soporta igual que Facebook.
+VIDEO_RE = re.compile(r"^https?://([a-z0-9\-]+\.)?(facebook\.com|x\.com|twitter\.com)/", re.I)
 IMG_EXT = (".jpg", ".jpeg", ".png", ".webp", ".gif")
 
 
@@ -85,9 +86,9 @@ def fbvideo():
         return jsonify(error="unauthorized"), 401
     data = request.get_json(silent=True) or {}
     url = (data.get("url") or "").strip()
-    if not FB_RE.match(url):
-        return jsonify(error="solo se aceptan URLs de facebook.com"), 400
-
+        if not VIDEO_RE.match(url):
+        return jsonify(error="solo se aceptan URLs de facebook.com, x.com o twitter.com"), 400
+          
     tmp = tempfile.mkdtemp(prefix="fbv_")
     try:
         out = os.path.join(tmp, "video.%(ext)s")

@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.12-slim-bookworm
 
 # ffmpeg lo usa yt-dlp para unir audio+vídeo cuando hace falta
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg \
@@ -14,4 +14,4 @@ ENV PORT=8080
 EXPOSE 8080
 
 # timeout amplio porque descargar puede tardar
-CMD ["sh", "-c", "gunicorn -b 0.0.0.0:${PORT:-8080} -t 330 -w 2 app:app"]
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:${PORT:-8080} -t 900 -w 2 app:app"]

@@ -87,7 +87,7 @@ def fbvideo():
         return jsonify(error="unauthorized"), 401
     data = request.get_json(silent=True) or {}
     url = (data.get("url") or "").strip()
-           if not VIDEO_RE.match(url):
+    if not VIDEO_RE.match(url):
         return jsonify(error="solo se aceptan URLs de facebook.com, x.com o twitter.com"), 400
     tmp = tempfile.mkdtemp(prefix="fbv_")
     try:
